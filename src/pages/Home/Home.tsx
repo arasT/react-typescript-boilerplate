@@ -1,17 +1,24 @@
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import React, { FC } from "react";
-import { AddNb, AddNbDouble, ResetNb } from "redux-services/modules/common";
+import React, { FC, useEffect } from "react";
+import {
+  AddNb,
+  AddNbDouble,
+  GetPublicIPSaga,
+  ResetNb,
+} from "redux-services/modules/common";
 
 interface HomeProps {
   listeNombre: number[];
   listeNombreDouble: number[];
   listeTriple: number[];
   total: number;
+  myIp: string;
   addNb: AddNb;
   resetNb: ResetNb;
   addNbDouble: AddNbDouble;
+  getPublicIPSaga: GetPublicIPSaga;
 }
 
 const Home: FC<HomeProps> = (props) => {
@@ -20,9 +27,11 @@ const Home: FC<HomeProps> = (props) => {
     listeNombreDouble,
     listeTriple,
     total,
+    myIp,
     addNb,
     resetNb,
     addNbDouble,
+    getPublicIPSaga,
   } = props;
 
   const handleAddNb = () => {
@@ -32,9 +41,14 @@ const Home: FC<HomeProps> = (props) => {
     // addNbDouble(newNumber * 2);
   };
 
+  // Get my PUBLIC IP on mount
+  useEffect(() => {
+    getPublicIPSaga("MG");
+  }, []);
+
   return (
     <Box>
-      <Typography component="h1">Home</Typography>
+      <Typography component="h1">Home: {myIp}</Typography>
       <Box display="flex" my={2} justifyContent="center">
         <Box mr={4}>
           <Button variant="contained" color="primary" onClick={handleAddNb}>

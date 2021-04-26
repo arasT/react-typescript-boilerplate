@@ -7,6 +7,7 @@ const INIT_NB = [0];
 const initialState: CommonState = {
   listNb: [...INIT_NB],
   listDouble: [...INIT_NB],
+  currentIP: "127.0.0.1",
 };
 
 // Actions creator
@@ -21,8 +22,16 @@ export type AddNbDouble = typeof addNbDouble;
 export const resetNb = () => typedAction("COMMON/RESET_NB");
 export type ResetNb = typeof resetNb;
 
+export const getPublicIPSaga = (location: string) =>
+  typedAction("COMMON/GET_PUBLIC_IP_SAGA", location);
+export type GetPublicIPSaga = typeof getPublicIPSaga;
+
+export const setMyIP = (currentIP: string) =>
+  typedAction("COMMON/SET_MY_IP", currentIP);
+export type SetMyIP = typeof setMyIP;
+
 // Actions type
-type CommonAction = ReturnType<AddNb | ResetNb | AddNbDouble>;
+type CommonAction = ReturnType<AddNb | ResetNb | AddNbDouble | SetMyIP>;
 
 // Use reselect to get number double list
 const nbListSelector = (listNb: number[]) => listNb;
@@ -71,6 +80,9 @@ export const CommonReducer = (
 
     case "COMMON/RESET_NB":
       return { ...state, listNb: [...INIT_NB] };
+
+    case "COMMON/SET_MY_IP":
+      return { ...state, currentIP: action.payload };
 
     default:
       return state;
